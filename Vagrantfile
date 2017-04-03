@@ -13,18 +13,23 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
 
+  config.ssh.forward_agent = true
+
   config.vm.define "web" do |web|
     web.vm.box = "minimal/xenial64"
     web.vm.network "private_network", ip: "192.168.50.11"
+    web.vm.host_name = 'web'
   end
 
   config.vm.define "db" do |db|
     db.vm.box = "minimal/xenial64"
+    db.vm.host_name = 'db'
     db.vm.network "private_network", ip: "192.168.50.12"
   end
 
   config.vm.define "bastion" do |bastion|
     bastion.vm.box = "minimal/xenial64"
+    bastion.vm.host_name = 'bastion'
     bastion.vm.network "private_network", ip: "192.168.50.10"
     config.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
   end
@@ -42,5 +47,9 @@ Vagrant.configure("2") do |config|
       echo #{ssh_pub_key} >> /home/$USER/.ssh/authorized_keys
     SHELL
   end
+
+  config.vm.provision "ansible" do |ansible|
+      ansible.playbook = "provisioning/playbook.yml"
+    end
 
 end

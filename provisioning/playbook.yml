@@ -1,0 +1,34 @@
+- hosts: all
+  remote_user: vagrant
+  sudo: yes
+
+  tasks:
+    - name: Install ntp
+      apt:
+        name: ntp
+        update_cache: yes
+
+- hosts: web
+  remote_user: vagrant
+  sudo: yes
+
+  tasks:
+    - name: Install LAMP
+      apt:
+        name: "{{item}}"
+        update_cache: yes
+      with_items:
+        - apache2
+        - php7.0
+
+- hosts: db
+  remote_user: vagrant
+  sudo: yes
+
+  tasks:
+    - name: Install MariaDB
+      apt:
+        name: "{{item}}"
+        update_cache: yes
+      with_items:
+        - mariadb-server

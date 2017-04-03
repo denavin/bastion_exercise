@@ -36,11 +36,10 @@ But as these servers have a copy of your public key, they can be reached through
 
 The `bastion` is setup as an ssh proxy for both web and db in the ssh config file.
 
-To test: 
+To command test:
+ansible -i .vagrant/provisioners/ansible all -a "uptime"
 
-```bash
-ssh -F sshconfig vagrant@192.168.50.11
-```
+Command run auto in playbook
 
 This command read the ssh config, proxy the ssh through the bastion, forward your private key and connect into the web server without a passwords using your locallyy stored private key.
 
